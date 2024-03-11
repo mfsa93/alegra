@@ -26,46 +26,55 @@ class IngredientController extends Controller
     public function getIngredients(Request $request): JsonResponse
     {
         $ingredientsRequested = $request->ingredients;
+        Log::info($ingredientsRequested);
         $ingredientsStatus = [];
 
-        foreach ($ingredientsRequested as $ingredientName) {
-            $ingredientsStatus[$ingredientName] = $this->processIngredient($ingredientName);
+        foreach ($ingredientsRequested as $ingredientName => $quantityNeeded) {
+            $ingredientsStatus[$ingredientName] = $this->processIngredient(
+                $ingredientName, $quantityNeeded
+            );
         }
 
         return response()->json($ingredientsStatus);
     }
 
-    private function processIngredient($ingredientName): string
+    private function processIngredient($ingredientName, $quantityNeeded): bool
     {
         $ingredient = Ingredient::where('name', $ingredientName)->first();
-        Log::info($ingredient);
-        if (!$ingredient || ($ingredient->quantity === 0 && !$this->fullFillIngredient($ingredientName))) {
-            return 0;
+
+        if (
+            !$ingredient ||
+            ($ingredient->quantity < $quantityNeeded &&
+                !$this->fullFillIngredient(
+                    $ingredientName, $quantityNeeded - $ingredient->quantity
+                )
+            )
+        ) {
+            return false;
         }
 
-        if (!$this->decreaseIngredient($ingredientName)) {
-            return 0;
-        }
-
-        return 1;
+        return $this->decreaseIngredient($ingredientName, $quantityNeeded);
     }
 
-    private function fullFillIngredient($name, $attemps = 3): bool
+    private function fullFillIngredient($name, $quantityNeeded, $attemps = 3, $quantityGetted = 0): bool
     {
-        $quantity = $this->marketService->buyIngredient($name);
-        Log::info($quantity);
+        $quantityGetted = $quantity = $this->marketService->buyIngredient($name);
         if (!$quantity) {
-            return $attemps ? $this->fullFillIngredient($name, $attemps - 1) : 0;
+            return $attemps ? $this->fullFillIngredient($name, $attemps - 1, $quantity) : 0;
         }
 
         Ingredient::where(
-            ['name' => $name]
-        )->update(['quantity' => $quantity]);
-        
+             ['name' => $name]
+        )->first()->increment('quantity', $quantity);
+
+        if($quantityGetted < $quantityNeeded) {
+            return $attemps ? $this->fullFillIngredient($name, $attemps) : 0;
+        }
+
         return true;
     }
 
-    private function decreaseIngredient($name): bool
+    private function decreaseIngredient($name, $quantityNeeded): bool
     {
         $ingredient = Ingredient::where('name', $name)->first();
 
@@ -73,7 +82,7 @@ class IngredientController extends Controller
             return false;
         }
 
-        $ingredient->decrement('quantity');
+        $ingredient->decrement('quantity', $quantityNeeded);
         return true;
     }
 }
