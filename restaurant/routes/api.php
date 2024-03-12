@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\MarketPurchaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\IngredientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +17,3 @@ use App\Http\Controllers\IngredientController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('/ingredients', [IngredientController::class, 'index']);
-Route::post('/ingredients', [IngredientController::class, 'getIngredients']);
-Route::get('/market-purchases', [MarketPurchaseController::class, 'index']);
-
-

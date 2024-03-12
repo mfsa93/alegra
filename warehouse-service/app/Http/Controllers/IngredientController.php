@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ingredient;
+use App\Models\MarketPurchase;
 use App\Services\MarketService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -59,15 +60,21 @@ class IngredientController extends Controller
     private function fullFillIngredient($name, $quantityNeeded, $attemps = 3, $quantityGetted = 0): bool
     {
         $quantityGetted = $quantity = $this->marketService->buyIngredient($name);
+        
+        MarketPurchase::create([
+            'ingredient_name' => $name,
+            'quantity' => $quantityGetted,
+        ]);
+
         if (!$quantity) {
             return $attemps ? $this->fullFillIngredient($name, $attemps - 1, $quantity) : 0;
         }
 
         Ingredient::where(
-             ['name' => $name]
+            ['name' => $name]
         )->first()->increment('quantity', $quantity);
 
-        if($quantityGetted < $quantityNeeded) {
+        if ($quantityGetted < $quantityNeeded) {
             return $attemps ? $this->fullFillIngredient($name, $attemps) : 0;
         }
 
