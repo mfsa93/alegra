@@ -17,6 +17,12 @@ class RecipesController extends Controller
         $this->warehouseService = $warehouseService;
     }
 
+    public function index()
+    {
+        $recipes = Recipes::with('ingredients')->get();
+        return response()->json($recipes);
+    }
+
     public function prepareRandomMeal()
     {
         $recipe = Recipes::inRandomOrder()->with('ingredients')->first();

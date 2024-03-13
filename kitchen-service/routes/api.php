@@ -19,6 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::get('/recipes', [RecipesController::class, 'index']);
 Route::get('/prepare-meal', [RecipesController::class, 'prepareRandomMeal']);
 Route::get('/cooking-activities', [CookingActivityController::class, 'index']);
