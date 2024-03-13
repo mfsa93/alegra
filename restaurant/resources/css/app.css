@@ -5,3 +5,7 @@
 body {
     background-color: #f8fafc;
 }
+
+.pagination ul li button {
+    padding: 15px;
+}

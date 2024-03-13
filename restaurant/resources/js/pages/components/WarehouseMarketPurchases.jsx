@@ -1,9 +1,14 @@
 import React from "react";
-import { Table, Card } from "flowbite-react";
+import { Table, Card, Pagination } from "flowbite-react";
 import { TfiReload } from "react-icons/tfi";
-import Pagination from "../../common/Pagination";
 
-const WarehouseMarketPurchases = ({ marketPurchases, links, load }) => {
+const WarehouseMarketPurchases = ({
+    marketPurchases,
+    links,
+    load,
+    currentPage,
+    lastPage,
+}) => {
     return (
         <Card className="w-1/2 p-4">
             <div className="mb-4 flex items-center justify-between">
@@ -40,8 +45,12 @@ const WarehouseMarketPurchases = ({ marketPurchases, links, load }) => {
                 </Table.Body>
             </Table>
 
-            <div className="mt-4 w-100">
-                <Pagination links={links} load={load} />
+            <div className="pagination w-full flex-1 flex overflow-x-auto sm:justify-center">
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={lastPage}
+                    onPageChange={load}
+                />
             </div>
         </Card>
     );

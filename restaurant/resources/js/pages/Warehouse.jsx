@@ -14,6 +14,8 @@ function Warehouse() {
     const [marketPurchases, setMarketPurchases] = useState({
         data: [],
         links: [],
+        current_page: 1,
+        last_page: 1,
     });
 
     const loadInventory = () => {
@@ -36,6 +38,13 @@ function Warehouse() {
             });
     };
 
+    const handlePageChange = (page) => {
+        const item = marketPurchases.links.find(
+            (link) => link.label === page.toString()
+        );
+        loadMarketPurchases(item.url);
+    };
+
     useEffect(() => {
         loadInventory();
         loadMarketPurchases();
@@ -56,7 +65,9 @@ function Warehouse() {
                 <WarehouseMarketPurchases
                     marketPurchases={marketPurchases.data}
                     links={marketPurchases.links}
-                    load={loadMarketPurchases}
+                    currentPage={marketPurchases.current_page}
+                    lastPage={marketPurchases.last_page}
+                    load={handlePageChange}
                 />
             </div>
         </DefaultLayout>

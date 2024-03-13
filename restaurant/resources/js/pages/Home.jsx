@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import DefaultLayout from "../layout/DefaultLayouts";
 import { fetchRecipes, fetchRandomRecipe } from "../api/kitchen";
-import RecipeCard from "./components/RecipeCard";
+import RecipeSelectorCard from "./components/RecipeSelectorCard";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Home() {
     const [recipes, setRecipes] = useState([]);
@@ -34,9 +36,26 @@ function Home() {
                     setSelectedRecipe(data);
                     setIsRouletteSpinning(false);
                     highlightSelectedRecipe(data);
-
+                    toast.success(`🎉 ${data.recipe} is the lucky recipe!`, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                     setTimeout(() => {
                         setSelectedRecipe(null);
+                        toast.info("🍽️ Enjoy your meal is cooking!", {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
                     }, 3000);
                 }, 1000);
             })
@@ -105,7 +124,7 @@ function Home() {
 
                 <div className="grid grid-cols-3 gap-5">
                     {recipes.map((recipe) => (
-                        <RecipeCard
+                        <RecipeSelectorCard
                             recipe={recipe}
                             selected={recipe?.selected}
                             selectedRecipe={
@@ -115,6 +134,7 @@ function Home() {
                     ))}
                 </div>
             </div>
+            <ToastContainer />
         </DefaultLayout>
     );
 }

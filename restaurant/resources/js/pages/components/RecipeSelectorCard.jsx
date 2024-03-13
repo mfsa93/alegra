@@ -2,7 +2,7 @@ import React from "react";
 import { FaBowlFood } from "react-icons/fa6";
 import { Card } from "flowbite-react";
 
-const RecipeCard = ({ recipe, selected, selectedRecipe }) => {
+const RecipeSelectorCard = ({ recipe, selected, selectedRecipe }) => {
     return (
         <Card
             className={`max-w-sm border-2 ${selected ? "border-green-600" : ""}
@@ -28,8 +28,6 @@ const RecipeCard = ({ recipe, selected, selectedRecipe }) => {
                                     className="px-2 py-1 text-xs font-medium text-gray-900 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-full"
                                 >
                                     {ingredient.name}
-                                    {": "}
-                                    {ingredient?.pivot?.quantity}
                                 </li>
                             ))}
                         </ul>
@@ -40,4 +38,4 @@ const RecipeCard = ({ recipe, selected, selectedRecipe }) => {
     );
 };
 
-export default RecipeCard;
+export default RecipeSelectorCard;
