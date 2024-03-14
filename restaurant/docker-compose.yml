@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+    frontend:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8100:80"
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - alegra-net
+networks:
+    alegra-net:
+        driver: bridge
