@@ -1,47 +1,47 @@
-version: '3.8'
+version: "3.8"
 services:
-  warehouse:
-    build:
-      context: .
-    ports:
-      - "8000:80"
-    environment:
-      APP_NAME: WarehouseService
-      APP_ENV: local
-      APP_KEY: base64:032f75b3ca02a393196a818328bd32e8
-      APP_DEBUG: true
-      APP_URL: http://localhost:8000
-      LOG_CHANNEL: stack
-      DB_CONNECTION: mysql
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_DATABASE: warehouse
-      DB_USERNAME: alegra
-      DB_PASSWORD: alegra2024
-      MARKET_API_URL: https://recruitment.alegra.com/api/farmers-market/buy
-    depends_on:
-      - db
-    volumes:
-      - .:/var/www/html
-    networks:
-      - alegra-net
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_DATABASE: warehouse
-      MYSQL_USER: alegra
-      MYSQL_PASSWORD: alegra2024
-      MYSQL_ROOT_PASSWORD: alegra_2024
-    ports:
-      - "33060:3306"
-    volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - alegra-net
+    warehouse:
+        build:
+            context: .
+        ports:
+            - "8000:80"
+        environment:
+            APP_NAME: WarehouseService
+            APP_ENV: local
+            APP_KEY: base64:032f75b3ca02a393196a818328bd32e8
+            APP_DEBUG: true
+            APP_URL: http://localhost:8000
+            LOG_CHANNEL: stack
+            DB_CONNECTION: mysql
+            DB_HOST: db
+            DB_PORT: 3306
+            DB_DATABASE: warehouse
+            DB_USERNAME: alegra
+            DB_PASSWORD: alegra2024
+            MARKET_API_URL: https://recruitment.alegra.com/api/farmers-market/buy
+        depends_on:
+            - db
+        volumes:
+            - .:/var/www/html
+        networks:
+            - alegra-net
+    db:
+        image: mysql:5.7
+        environment:
+            MYSQL_DATABASE: warehouse
+            MYSQL_USER: alegra
+            MYSQL_PASSWORD: alegra2024
+            MYSQL_ROOT_PASSWORD: alegra_2024
+        ports:
+            - "33060:3306"
+        volumes:
+            - dbdata:/var/lib/mysql
+        networks:
+            - alegra-net
 
 volumes:
-  dbdata:
+    dbdata:
 
 networks:
-  alegra-net:
-    driver: bridge
+    alegra-net:
+        driver: bridge

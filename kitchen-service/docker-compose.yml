@@ -1,47 +1,47 @@
-version: '3.8'
+version: "3.8"
 services:
-  kitchen:
-    build:
-      context: .
-    ports:
-      - "8100:80"
-    environment:
-      APP_NAME: KitchenService
-      APP_ENV: local
-      APP_KEY: base64:032f75b3ca02a393196a818328bd32e8
-      APP_DEBUG: true
-      APP_URL: http://localhost:8100
-      LOG_CHANNEL: stack
-      DB_CONNECTION: mysql
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_DATABASE: kitchen
-      DB_USERNAME: alegra
-      DB_PASSWORD: alegra2024
-      WAREHOUSE_API: http://warehouse/api/ingredients
-    depends_on:
-      - db
-    volumes:
-      - .:/var/www/html
-    networks:
-      - alegra-net
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_DATABASE: kitchen
-      MYSQL_USER: alegra
-      MYSQL_PASSWORD: alegra2024
-      MYSQL_ROOT_PASSWORD: alegra_2024
-    ports:
-      - "33061:3306"
-    volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - alegra-net
+    kitchen:
+        build:
+            context: .
+        ports:
+            - "8001:80"
+        environment:
+            APP_NAME: KitchenService
+            APP_ENV: local
+            APP_KEY: base64:032f75b3ca02a393196a818328bd32e8
+            APP_DEBUG: true
+            APP_URL: http://localhost:8100
+            LOG_CHANNEL: stack
+            DB_CONNECTION: mysql
+            DB_HOST: db
+            DB_PORT: 3306
+            DB_DATABASE: kitchen
+            DB_USERNAME: alegra
+            DB_PASSWORD: alegra2024
+            WAREHOUSE_API: http://warehouse/api/ingredients
+        depends_on:
+            - db
+        volumes:
+            - .:/var/www/html
+        networks:
+            - alegra-net
+    db:
+        image: mysql:5.7
+        environment:
+            MYSQL_DATABASE: kitchen
+            MYSQL_USER: alegra
+            MYSQL_PASSWORD: alegra2024
+            MYSQL_ROOT_PASSWORD: alegra_2024
+        ports:
+            - "33061:3306"
+        volumes:
+            - dbdata:/var/lib/mysql
+        networks:
+            - alegra-net
 
 volumes:
-  dbdata:
+    dbdata:
 
 networks:
-  alegra-net:
-    driver: bridge
+    alegra-net:
+        driver: bridge
