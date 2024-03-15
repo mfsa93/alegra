@@ -4,7 +4,7 @@ import { TfiReload } from "react-icons/tfi";
 
 const WarehouseIngredients = ({ ingredients, loadInventory }) => {
     return (
-        <Card className="max-w-xl md:w-1/2 p-4">
+        <Card className="max-w-xl p-4">
             <div className="mb-4 flex items-center justify-between">
                 <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
                     Inventory

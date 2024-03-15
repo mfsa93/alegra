@@ -10,7 +10,7 @@ const WarehouseMarketPurchases = ({
     showPagination = true,
 }) => {
     return (
-        <Card className="md:w-1/2 p-4">
+        <Card className="p-4">
             <div className="mb-4 flex items-center justify-between">
                 <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
                     Market Purchases
