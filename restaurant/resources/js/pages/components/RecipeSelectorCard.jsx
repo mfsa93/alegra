@@ -12,7 +12,7 @@ const RecipeSelectorCard = ({ recipe, selected, selectedRecipe }) => {
             <div className="flex justify-end px-4 pt-4 "></div>
             <div className="flex flex-col items-center pb-10">
                 <FaBowlFood className="w-16 h-16 text-cyan-600 mb-3" />
-                <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                <h5 className="px-3 mb-1 text-xl font-medium text-gray-900 dark:text-white">
                     {recipe?.name}
                 </h5>
                 <div className="w-full pt-4 px-4">

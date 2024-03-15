@@ -122,7 +122,7 @@ function Home() {
                     </span>
                 </h2>
 
-                <div className="grid grid-cols-3 gap-5">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                     {recipes.map((recipe) => (
                         <RecipeSelectorCard
                             recipe={recipe}

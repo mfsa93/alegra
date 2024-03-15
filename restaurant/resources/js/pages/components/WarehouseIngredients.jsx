@@ -4,7 +4,7 @@ import { TfiReload } from "react-icons/tfi";
 
 const WarehouseIngredients = ({ ingredients, loadInventory }) => {
     return (
-        <Card className="max-w-xl w-1/2 p-4">
+        <Card className="max-w-xl md:w-1/2 p-4">
             <div className="mb-4 flex items-center justify-between">
                 <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
                     Inventory
@@ -16,24 +16,31 @@ const WarehouseIngredients = ({ ingredients, loadInventory }) => {
                     <TfiReload />
                 </button>
             </div>
-            <Table hoverable>
-                <Table.Head>
-                    <Table.HeadCell>Ingredient</Table.HeadCell>
-                    <Table.HeadCell>Quantity</Table.HeadCell>
-                </Table.Head>
 
-                <Table.Body className="divide-y">
-                    {ingredients.map((item) => (
-                        <Table.Row
-                            key={item.id}
-                            className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                        >
-                            <Table.Cell>{item.name}</Table.Cell>
-                            <Table.Cell>{item.quantity}</Table.Cell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table>
+            {!!ingredients?.length ? (
+                <Table hoverable>
+                    <Table.Head>
+                        <Table.HeadCell>Ingredient</Table.HeadCell>
+                        <Table.HeadCell>Quantity</Table.HeadCell>
+                    </Table.Head>
+
+                    <Table.Body className="divide-y">
+                        {ingredients.map((item) => (
+                            <Table.Row
+                                key={item.id}
+                                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                            >
+                                <Table.Cell>{item.name}</Table.Cell>
+                                <Table.Cell>{item.quantity}</Table.Cell>
+                            </Table.Row>
+                        ))}
+                    </Table.Body>
+                </Table>
+            ) : (
+                <p className="text-gray-900 dark:text-white">
+                    No ingredients found
+                </p>
+            )}
         </Card>
     );
 };

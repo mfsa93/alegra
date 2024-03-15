@@ -1,5 +1,7 @@
 FROM php:8.2-apache
 
+COPY composer.json composer.lock /var/www/html/
+
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -10,22 +12,39 @@ RUN apt-get update && apt-get install -y \
     zip \
     autoconf \
     g++ \
-    make && docker-php-ext-install pdo pdo_mysql && a2enmod rewrite
+    make \
+    && docker-php-ext-install pdo pdo_mysql \
+    && a2enmod rewrite
 
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt-get install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+
+# Creating a new user "appuser"
+RUN useradd -m -s /bin/bash appuser
+
+# Copy the application source code
 COPY . /var/www/html
 
-RUN composer install --no-dev --optimize-autoloader
+# Change ownership of all files to appuser
+RUN chown -R appuser:appuser /var/www/html
 
+# Switch to appuser
+USER appuser
+
+# Running Composer as the "appuser"
+RUN composer update && composer install
+
+# Switch back to root to perform operations that require root privileges
+USER root
+
+# Permissions adjustment, if necessary
 RUN npm install && npm run build
-
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80

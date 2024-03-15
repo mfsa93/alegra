@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  kitchen:
+    build:
+      context: .
+    ports:
+      - "8001:80"
+    environment:
+      APP_NAME: KitchenService
+      APP_ENV: local
+      APP_KEY: base64:Nmg3Z3c0ODR5bDQ0OXZoNWR0ZXdldWVpdHNxM2RiMDI=
+      APP_DEBUG: true
+      APP_URL: http://localhost:8100
+      LOG_CHANNEL: stack
+      DB_CONNECTION: mysql
+      DB_HOST: kitchendb
+      DB_PORT: 3306
+      DB_DATABASE: kitchen
+      DB_USERNAME: alegra
+      DB_PASSWORD: alegra2024
+      WAREHOUSE_API_URL: http://warehouse/api/ingredients
+    depends_on:
+      - kitchendb
+    volumes:
+      - .:/var/www/html
+    networks:
+      - alegra-net
+  kitchendb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: kitchen
+      MYSQL_USER: alegra
+      MYSQL_PASSWORD: alegra2024
+      MYSQL_ROOT_PASSWORD: alegra_2024
+    ports:
+      - "33061:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - alegra-net
+
+networks:
+  alegra-net:
+    external: true

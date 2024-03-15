@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  warehouse:
+    build:
+      context: .
+    ports:
+      - "8000:80"
+    environment:
+      APP_NAME: WarehouseService
+      APP_ENV: local
+      APP_KEY: base64:Nmg3Z3c0ODR5bDQ0OXZoNWR0ZXdldWVpdHNxM2RiMDI=
+      APP_DEBUG: true
+      APP_URL: http://localhost:8000
+      LOG_CHANNEL: stack
+      DB_CONNECTION: mysql
+      DB_HOST: warehousedb
+      DB_PORT: 3306
+      DB_DATABASE: warehouse
+      DB_USERNAME: alegra
+      DB_PASSWORD: alegra2024
+      MARKET_API_URL: https://recruitment.alegra.com/api/farmers-market/buy
+    depends_on:
+      - warehousedb
+    volumes:
+      - .:/var/www/html
+    networks:
+      - alegra-net
+  warehousedb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: warehouse
+      MYSQL_USER: alegra
+      MYSQL_PASSWORD: alegra2024
+      MYSQL_ROOT_PASSWORD: alegra_2024
+    ports:
+      - "33060:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - alegra-net
+
+networks:
+  alegra-net:
+    external: true

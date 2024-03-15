@@ -22,12 +22,11 @@ class WarehouseService
      */
     public function checkIngredientsAvailability(array $ingredients): bool
     {
-        $response = Http::post(env('WAREHOUSE_API'), [
+        $response = Http::post($this->baseUrl, [
             'ingredients' => $ingredients,
         ]);
-    
+
         Log::info($response);
-        // we dont need more that the successful response
         if ($response->successful()) {
             return true;
         }

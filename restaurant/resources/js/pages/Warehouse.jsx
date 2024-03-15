@@ -57,16 +57,16 @@ function Warehouse() {
                     Warehouse
                 </h1>
             </div>
-            <div className="flex flex-wrap justify-around w-100">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 justify-around w-100">
                 <WarehouseIngredients
                     ingredients={inventory}
                     loadInventory={loadInventory}
                 />
                 <WarehouseMarketPurchases
                     marketPurchases={marketPurchases.data}
-                    links={marketPurchases.links}
                     currentPage={marketPurchases.current_page}
                     lastPage={marketPurchases.last_page}
+                    showPagination={marketPurchases.last_page > 1}
                     load={handlePageChange}
                 />
             </div>

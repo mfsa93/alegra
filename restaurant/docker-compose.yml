@@ -1,6 +1,11 @@
 version: "3.8"
 services:
     frontend:
+        environment:
+            APP_NAME: restaurant
+            APP_ENV: production
+            APP_KEY: base64:Nmg3Z3c0ODR5bDQ0OXZoNWR0ZXdldWVpdHNxM2RiMDI=
+            APP_DEBUG: false
         build:
             context: .
             dockerfile: Dockerfile
@@ -8,8 +13,6 @@ services:
         tty: true
         ports:
             - "8100:80"
-        volumes:
-            - ./:/var/www/html
         networks:
             - alegra-net
 networks:
